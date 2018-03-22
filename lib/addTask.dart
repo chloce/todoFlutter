@@ -1,16 +1,11 @@
 import 'package:flutter/material.dart';
+import 'dart:async';
 
-class AddTask extends StatefulWidget {
-  AddTask({Key key, this.tasks}) : super(key: key);
-  final tasks;
-  AddTaskState createState() => new AddTaskState();
-}
-
-class AddTaskState extends State<AddTask> {
-  String newTask;
+Future<String> addTaskPage(context) async {
   final TextEditingController _controller = new TextEditingController();
-  @override
-  Widget build(BuildContext context) {
+  return Navigator
+      .of(context)
+      .push(new MaterialPageRoute<String>(builder: (BuildContext context) {
     return new Scaffold(
         appBar: new AppBar(
             title: new Text(
@@ -25,14 +20,11 @@ class AddTaskState extends State<AddTask> {
             ),
             new RaisedButton(
               child: new Text('add'),
-              onPressed: _onPressed,
+              onPressed: () {
+                return Navigator.pop(context, _controller.text.trim() ?? '');
+              },
             )
           ],
         ));
-  }
-
-  void _onPressed() {
-    //setState(widget.tasks.add('a'));
-    Navigator.pop(context, _controller.text.trim() ?? '');
-  }
+  }));
 }

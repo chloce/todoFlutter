@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'dart:async';
+
+import 'package:task/addTask.dart';
 
 void main() => runApp(new MyApp());
 
@@ -48,33 +51,11 @@ class _MyHomeState extends State<MyHome> with RouteAware {
             onPressed: _addTask, child: new Icon(Icons.add)));
   }
 
-  _addTask() {
-    final TextEditingController _controller = new TextEditingController();
-    Navigator
-        .of(context)
-        .push(new MaterialPageRoute<String>(builder: (BuildContext context) {
-      return new Scaffold(
-          appBar: new AppBar(
-              title: new Text(
-            'add new Task',
-          )),
-          body: new Column(
-            children: <Widget>[
-              new Text('add your todo'),
-              new TextField(
-                controller: _controller,
-                decoration: new InputDecoration(hintText: 'Type your task'),
-              ),
-              new RaisedButton(
-                child: new Text('add'),
-                onPressed: () {
-                  setState(() => tasks.add(_controller.text.trim()));
-                  Navigator.pop(context);
-                },
-              )
-            ],
-          ));
-    }));
+  Future<Null> _addTask() async {
+    final task = await addTaskPage(context);
+    if (task != '') {
+      setState(() => tasks.add(task));
+    }
   }
 }
 
@@ -97,5 +78,3 @@ Widget _taskListItem(task, context) {
         title: new Text(task),
       ));
 }
-
-Widget _addTaskPage(controller, tasks, context) {}
