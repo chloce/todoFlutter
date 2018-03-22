@@ -1,21 +1,18 @@
 import 'package:flutter/material.dart';
 
-import 'package:task/addTask.dart';
-
 void main() => runApp(new MyApp());
 
-final RouteObserver<PageRoute> routeObserver = new RouteObserver<PageRoute>();
+//final RouteObserver<PageRoute> routeObserver = new RouteObserver<PageRoute>();
 
 class MyApp extends StatelessWidget {
   final title = 'Task Manager';
   @override
   Widget build(BuildContext context) {
-    return new MaterialApp(title: title, routes: <String, WidgetBuilder>{
-      '/': (BuildContext context) => new MyHome(title: title),
-      '/add': (BuildContext context) => new NewTask(),
-    }, navigatorObservers: <NavigatorObserver>[
-      routeObserver
-    ]);
+    return new MaterialApp(
+      title: title,
+      home: new MyHome(title: title),
+      //navigatorObservers: <NavigatorObserver>[routeObserver]
+    );
   }
 }
 
@@ -27,15 +24,17 @@ class MyHome extends StatefulWidget {
 }
 
 class _MyHomeState extends State<MyHome> with RouteAware {
+  /*
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     routeObserver.subscribe(this, ModalRoute.of(context));
   }
-
+  
   void didPopNext() {
     debugPrint("didPopNext ${runtimeType}");
   }
+  */
 
   List<String> tasks = <String>['aa', 'vv', 'bb', 'cc'];
   @override
@@ -50,7 +49,32 @@ class _MyHomeState extends State<MyHome> with RouteAware {
   }
 
   _addTask() {
-    Navigator.of(context).pushNamed('/add');
+    final TextEditingController _controller = new TextEditingController();
+    Navigator
+        .of(context)
+        .push(new MaterialPageRoute<String>(builder: (BuildContext context) {
+      return new Scaffold(
+          appBar: new AppBar(
+              title: new Text(
+            'add new Task',
+          )),
+          body: new Column(
+            children: <Widget>[
+              new Text('add your todo'),
+              new TextField(
+                controller: _controller,
+                decoration: new InputDecoration(hintText: 'Type your task'),
+              ),
+              new RaisedButton(
+                child: new Text('add'),
+                onPressed: () {
+                  setState(() => tasks.add(_controller.text.trim()));
+                  Navigator.pop(context);
+                },
+              )
+            ],
+          ));
+    }));
   }
 }
 
@@ -73,3 +97,5 @@ Widget _taskListItem(task, context) {
         title: new Text(task),
       ));
 }
+
+Widget _addTaskPage(controller, tasks, context) {}

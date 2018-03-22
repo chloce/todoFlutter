@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 
-class NewTask extends StatefulWidget {
-  NewTaskState createState() => new NewTaskState();
+class AddTask extends StatefulWidget {
+  AddTask({Key key, this.tasks}) : super(key: key);
+  final tasks;
+  AddTaskState createState() => new AddTaskState();
 }
 
-class NewTaskState extends State<NewTask> {
+class AddTaskState extends State<AddTask> {
   String newTask;
-  final TextEditingController _controller =
-      new TextEditingController(); //textfieldの中身
+  final TextEditingController _controller = new TextEditingController();
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -31,6 +32,7 @@ class NewTaskState extends State<NewTask> {
   }
 
   void _onPressed() {
+    //setState(widget.tasks.add('a'));
     Navigator.pop(context, _controller.text.trim() ?? '');
   }
 }
